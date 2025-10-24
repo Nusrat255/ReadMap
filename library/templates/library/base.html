@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ReadMap Library</title>
+    <link rel="stylesheet" href="{% static 'library/style.css' %}">
+</head>
+<!-- rest of your HTML -->
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 ReadMap</h1>
+            {% if user.is_authenticated %}
+                <p>Welcome, <strong>{{ user.username }}</strong>!
+                <a href="{% url 'logout' %}">Logout</a></p>
+            {% endif %}
+        </header>
+
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="alert">{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="search-box">
+            <form action="{% url 'search_books' %}" method="get">
+                <input type="text" name="q" placeholder="Search books by title or author..." value="{{ query }}">
+                <button type="submit">🔍 Search</button>
+            </form>
+        </div>
+
+        {% block content %}{% endblock %}
+
+        <footer>
+            <p>© 2025 ReadMap • Made with 💖</p>
+        </footer>
+    </div>
+</body>
+</html>

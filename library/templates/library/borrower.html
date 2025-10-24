@@ -1,0 +1,48 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<div class="card">
+    <h2>📖 My Reading Corner</h2>
+
+    <h3>✅ Available Books</h3>
+    {% if available %}
+        <ul class="book-list">
+        {% for book in available %}
+            <li>
+                <strong>{{ book.title }}</strong> by {{ book.author }}
+                <a href="{% url 'borrow_book' book.id %}" class="btn-borrow">📚 Borrow</a>
+                {% if book.pdf_file %}
+                    <a href="{{ book.pdf_file.url }}" target="_blank" class="btn-review">📄 Preview</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books available right now. 😢</p>
+    {% endif %}
+
+    <h3>📘 My Borrowed Books (by Category)</h3>
+    {% if categories %}
+        {% for category, books in categories.items %}
+            <h4>📚 {{ category }}</h4>
+            <ul class="book-list">
+            {% for book in books %}
+                {% with record=book.borrowrecord_set.first %}
+                    {% if record and not record.returned %}
+                        <li>
+                            <strong>{{ book.title }}</strong> by {{ book.author }}
+                            <a href="{% url 'return_book' record.id %}" class="btn-return">↩️ Return</a>
+                            <a href="{% url 'add_review' book.id %}" class="btn-review">⭐ Rate & Note</a>
+                            {% if book.pdf_file %}
+                                <a href="{{ book.pdf_file.url }}" target="_blank" class="btn-review">📄 Read PDF</a>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endwith %}
+            {% endfor %}
+            </ul>
+        {% endfor %}
+    {% else %}
+        <p>You haven’t borrowed any books yet! 🌸</p>
+    {% endif %}
+</div>
+{% endblock %}

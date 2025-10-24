@@ -1,0 +1,21 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<div class="card">
+    <h2>⭐ Review: {{ book.title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label>Rating (1–5):</label>
+        <select name="rating" required>
+            {% for i in "12345" %}
+                <option value="{{ forloop.counter }}" {% if review and review.rating == forloop.counter %}selected{% endif %}>
+                    {{ forloop.counter }} star{{ forloop.counter|pluralize }}
+                </option>
+            {% endfor %}
+        </select><br>
+        <label>Your Notes:</label>
+        <textarea name="notes" rows="4" placeholder="Write your thoughts...">{{ review.notes }}</textarea><br>
+        <button type="submit">Save Review</button>
+    </form>
+    <p><a href="{% url 'borrower' %}">← Back</a></p>
+</div>
+{% endblock %}
