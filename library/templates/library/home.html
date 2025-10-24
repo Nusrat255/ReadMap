@@ -1,0 +1,11 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Welcome to ReadMap! 🌸</h2>
+    {% if user.is_authenticated %}
+        <p><a href="{% url 'borrower' %}">Go to My Library</a></p>
+    {% else %}
+        <p><a href="{% url 'login' %}">Log In</a> or <a href="{% url 'signup' %}">Sign Up</a></p>
+    {% endif %}
+</div>
+{% endblock %}

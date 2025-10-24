@@ -1,0 +1,23 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<div class="card">
+    <h2>🔍 Search Results for "{{ query }}"</h2>
+    {% if books %}
+        <ul class="book-list">
+        {% for book in books %}
+            <li>
+                <strong>{{ book.title }}</strong> by {{ book.author }}
+                {% if book.available %}
+                    <a href="{% url 'borrow_book' book.id %}" class="btn-borrow">📚 Borrow</a>
+                {% else %}
+                    <span class="status borrowed">🔄 Borrowed</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books found. Try another keyword! 💕</p>
+    {% endif %}
+    <p><a href="{% url 'borrower' %}">← Back to Library</a></p>
+</div>
+{% endblock %}

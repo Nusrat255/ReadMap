@@ -1,0 +1,35 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<div class="card">
+    <h2>👩‍💼 Admin Dashboard</h2>
+  <form method="post" action="{% url 'add_book' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name="title" placeholder="Book Title" required>
+    <input type="text" name="author" placeholder="Author" required>
+    <select name="category">
+        <option value="fiction">Fiction</option>
+        <option value="nonfiction">Non-Fiction</option>
+        <option value="science">Science</option>
+        <option value="history">History</option>
+        <option value="biography">Biography</option>
+        <option value="other" selected>Other</option>
+    </select>
+    <input type="file" name="pdf_file" accept=".pdf">
+    <button type="submit">➕ Add Book</button>
+</form>
+    <h3>📚 All Books</h3>
+    <ul class="book-list">
+    {% for book in books %}
+        <li>
+            <strong>{{ book.title }}</strong> by {{ book.author }}
+            {% if book.available %}
+                <span class="status available">✅ Available</span>
+            {% else %}
+                <span class="status borrowed">🔄 Borrowed</span>
+            {% endif %}
+            <a href="{% url 'remove_book' book.id %}" class="btn-remove">🗑️ Remove</a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}
