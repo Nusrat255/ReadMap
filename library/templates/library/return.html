@@ -1,0 +1,64 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<style>
+  .return-card {
+    max-width: 650px;
+    margin: 2rem auto;
+    padding: 1.8rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  }
+  .book-info {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-left: 4px solid #3498db;
+    margin: 1.2rem 0;
+    border-radius: 6px;
+  }
+  .btn-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 1.5rem;
+  }
+  .btn {
+    padding: 0.65rem 1.4rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+  .btn-confirm { background: #27ae60; color: white; }
+  .btn-cancel { background: #e0e0e0; color: #333; }
+  .btn:hover { opacity: 0.9; }
+</style>
+
+<div class="return-card">
+  <h2>↩ Confirm Book Return</h2>
+  <p>You are about to return the following book:</p>
+
+  <div class="book-info">
+    <h3> {{ book.title }}</h3>
+    <p><strong>Author:</strong> {{ book.author }}</p>
+    <p><strong>Borrowed on:</strong> {{ borrow_date }}</p>
+    {% if fine_amount %}
+      <p style="color: #e74c3c;"><strong>Fine due:</strong> ${{ fine_amount }}</p>
+    {% endif %}
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="book_id" value="{{ book.id }}">
+    <p>Returning this book will update your library record immediately.</p>
+
+    <div class="btn-group">
+      <button type="submit" class="btn btn-confirm"> Yes, Return Book</button>
+      <a href="{% url 'profile' %}" class="btn btn-cancel"> Cancel</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
